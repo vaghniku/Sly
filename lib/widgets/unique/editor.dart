@@ -24,7 +24,7 @@ import '/widgets/unique/histogram.dart';
 import '/widgets/unique/navigation.dart';
 import '/widgets/unique/controls.dart';
 import '/widgets/unique/geometry_controls.dart';
-import '/widgets/unique/export_controls.dart';
+import '/widgets/unique/share_controls.dart';
 import '/widgets/unique/toolbar.dart';
 import '/widgets/unique/image.dart';
 
@@ -422,17 +422,19 @@ class _SlyEditorPageState extends State<SlyEditorPage> {
           flipImage: flipImage,
         );
       case 4:
-        return SlyExportControls(
+        return SlyShareControls(
           getSaveMetadata: () => _saveMetadata,
           setSaveMetadata: (value) => _saveMetadata = value,
           multipleImages: juggler.images.length > 1,
           saveButton: _saveButton,
-          exportAll: () {
+          saveAll: () {
             _saveAll = true;
             _startSave();
           },
           copyEdits: () {
             juggler.copyEdits();
+            // This is so that whether the Copy/Paste buttons are visible updates
+            setState(() => _controlsChild = getControlsChild(index));
             showSlySnackBar(context, 'Copied');
           },
           pasteEdits: juggler.pasteEdits,

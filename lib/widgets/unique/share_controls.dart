@@ -5,23 +5,23 @@ import '/layout.dart';
 import '/widgets/switch.dart';
 import '/widgets/unique/save_button.dart';
 
-class SlyExportControls extends StatelessWidget {
+class SlyShareControls extends StatelessWidget {
   final Function getSaveMetadata;
   final Function setSaveMetadata;
   final bool multipleImages;
   final SlySaveButton? saveButton;
-  final VoidCallback? exportAll;
+  final VoidCallback? saveAll;
   final VoidCallback? copyEdits;
   final VoidCallback? pasteEdits;
   final bool canPasteEdits;
 
-  const SlyExportControls({
+  const SlyShareControls({
     super.key,
     required this.getSaveMetadata,
     required this.setSaveMetadata,
     required this.multipleImages,
     this.saveButton,
-    this.exportAll,
+    this.saveAll,
     this.copyEdits,
     this.pasteEdits,
     this.canPasteEdits = false,
@@ -29,7 +29,7 @@ class SlyExportControls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListView(
-        key: const Key('exportControls'),
+        key: const Key('shareControls'),
         physics: isWide(context) ? null : const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -69,7 +69,7 @@ class SlyExportControls extends StatelessWidget {
               ? Padding(
                   padding: const EdgeInsets.only(top: 6, bottom: 16),
                   child: SlyButton(
-                    onPressed: exportAll,
+                    onPressed: saveAll,
                     child: const Text('Save All'),
                   ),
                 )
@@ -80,7 +80,10 @@ class SlyExportControls extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       spacing: 8,
                       children: [
-                        const Text('Edits'),
+                        const Text(
+                          'Edits',
+                          style: TextStyle(fontWeight: FontWeight.w600),
+                        ),
                         Row(
                           spacing: 12,
                           children: [
