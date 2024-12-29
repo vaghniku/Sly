@@ -16,6 +16,7 @@ import '/widgets/unique/editor.dart';
 class SlyJuggler {
   StreamController<String> controller = StreamController<String>();
   final List<Map<String, dynamic>?> images = [];
+  SlyImage? copiedEdits;
 
   final List<Widget> carouselChildren = [];
 
@@ -27,21 +28,23 @@ class SlyJuggler {
     controller.add('new image');
   }
 
-  SlyImage get originalImage => images[selected]?['originalImage'];
+  Map<String, dynamic>? get selectedImage => images[selected];
 
-  SlyImage? get editedImage => images[selected]?['editedImage'];
+  SlyImage get originalImage => selectedImage?['originalImage'];
+
+  SlyImage? get editedImage => selectedImage?['editedImage'];
   set editedImage(value) {
-    images[selected]?['editedImage'] = value;
-    images[selected]?['cropController'] = cropController ?? CropController();
+    selectedImage?['editedImage'] = value;
+    selectedImage?['cropController'] = cropController ?? CropController();
     subscription?.cancel();
-    images[selected]?['subscription'] =
+    selectedImage?['subscription'] =
         editedImage!.controller.stream.listen((event) => controller.add(event));
   }
 
-  String? get suggestedFileName => images[selected]?['suggestedFileName'];
-  CropController? get cropController => images[selected]?['cropController'];
+  String? get suggestedFileName => selectedImage?['suggestedFileName'];
+  CropController? get cropController => selectedImage?['cropController'];
   StreamSubscription<String>? get subscription =>
-      images[selected]?['subscription'];
+      selectedImage?['subscription'];
 
   /// Creates a Juggler without any initial images.
   ///
@@ -81,12 +84,12 @@ class SlyJuggler {
   ///
   /// If there are any more images, selects the one to the left.
   void remove(int index) {
+    if (copiedEdits == editedImage) copiedEdits = null;
+
     images.removeAt(index);
     carouselChildren.removeAt(index);
 
-    if (images.isNotEmpty) {
-      selected = max(0, index - 1);
-    }
+    if (images.isNotEmpty) selected = max(0, index - 1);
 
     controller.add('removed');
   }
@@ -168,5 +171,19 @@ class SlyJuggler {
     }
 
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  }
+
+  /// Copies edits from the current image for pasting later.
+  void copyEdits() {
+    copiedEdits = editedImage;
+  }
+
+  /// Pastes edits from another image.
+  ///
+  /// Does not include geometry attributes.
+  void pasteEdits() {
+    if (copiedEdits == null || copiedEdits == editedImage) return;
+    editedImage?.copyEditsFrom(copiedEdits!, skipGeometry: true);
+    editedImage?.applyEditsProgressive();
   }
 }

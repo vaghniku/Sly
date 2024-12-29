@@ -286,9 +286,11 @@ class SlyImage {
 
   /// Copies edits from `src` to the image.
   ///
+  /// Doesn't copy geometry attributes if `skipGeometry` is true.
+  ///
   /// Note that if you want to see the changes,
   /// you need to call `applyEdits` or `applyEditsProgressive` yourself.
-  void copyEditsFrom(SlyImage src) {
+  void copyEditsFrom(SlyImage src, {skipGeometry = false}) {
     for (int i = 0; i < 3; i++) {
       for (MapEntry<String, SlyRangeAttribute> entry in [
         src.lightAttributes,
@@ -303,6 +305,8 @@ class SlyImage {
         ][i][entry.key] = SlyRangeAttribute.copy(entry.value);
       }
     }
+
+    if (skipGeometry) return;
 
     geometryAttributes['hflip'] = SlyBoolAttribute.copy(
       src.geometryAttributes['hflip'] as SlyBoolAttribute,

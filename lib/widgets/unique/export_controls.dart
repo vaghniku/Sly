@@ -11,6 +11,9 @@ class SlyExportControls extends StatelessWidget {
   final bool multipleImages;
   final SlySaveButton? saveButton;
   final VoidCallback? exportAll;
+  final VoidCallback? copyEdits;
+  final VoidCallback? pasteEdits;
+  final bool canPasteEdits;
 
   const SlyExportControls({
     super.key,
@@ -19,6 +22,9 @@ class SlyExportControls extends StatelessWidget {
     required this.multipleImages,
     this.saveButton,
     this.exportAll,
+    this.copyEdits,
+    this.pasteEdits,
+    this.canPasteEdits = false,
   });
 
   @override
@@ -26,14 +32,10 @@ class SlyExportControls extends StatelessWidget {
         key: const Key('exportControls'),
         physics: isWide(context) ? null : const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
+        padding: const EdgeInsets.symmetric(horizontal: 24),
         children: [
           Padding(
-            padding: const EdgeInsets.only(
-              top: 20,
-              bottom: 12,
-              left: 24,
-              right: 24,
-            ),
+            padding: const EdgeInsets.only(top: 20, bottom: 12),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -60,27 +62,51 @@ class SlyExportControls extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(
-              top: 6,
-              bottom: 6,
-              left: 24,
-              right: 24,
-            ),
+            padding: const EdgeInsets.symmetric(vertical: 6),
             child: saveButton,
           ),
           multipleImages
               ? Padding(
-                  padding: const EdgeInsets.only(
-                    top: 6,
-                    bottom: 40,
-                    left: 24,
-                    right: 24,
-                  ),
+                  padding: const EdgeInsets.only(top: 6, bottom: 16),
                   child: SlyButton(
                     onPressed: exportAll,
                     child: const Text('Save All'),
                   ),
                 )
+              : Container(),
+          multipleImages
+              ? canPasteEdits
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: 8,
+                      children: [
+                        const Text('Edits'),
+                        Row(
+                          spacing: 12,
+                          children: [
+                            Expanded(
+                              child: SlyButton(
+                                onPressed: copyEdits,
+                                child: const Text('Copy'),
+                              ),
+                            ),
+                            Expanded(
+                              child: SlyButton(
+                                onPressed: pasteEdits,
+                                child: const Text('Paste'),
+                              ),
+                            )
+                          ],
+                        )
+                      ],
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 6),
+                      child: SlyButton(
+                        onPressed: copyEdits,
+                        child: const Text('Copy Edits'),
+                      ),
+                    )
               : Container(),
         ],
       );

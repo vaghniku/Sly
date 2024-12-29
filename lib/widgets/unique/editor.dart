@@ -147,7 +147,7 @@ class _SlyEditorPageState extends State<SlyEditorPage> {
 
   Future<void> _save() async {
     final List<Map<String, dynamic>?> images =
-        _saveAll ? juggler.images : [juggler.images[juggler.selected]];
+        _saveAll ? juggler.images : [juggler.selectedImage];
     _saveAll = false;
 
     final newImages = <Uint8List>[];
@@ -431,6 +431,13 @@ class _SlyEditorPageState extends State<SlyEditorPage> {
             _saveAll = true;
             _startSave();
           },
+          copyEdits: () {
+            juggler.copyEdits();
+            showSlySnackBar(context, 'Copied');
+          },
+          pasteEdits: juggler.pasteEdits,
+          canPasteEdits: juggler.copiedEdits != null &&
+              juggler.copiedEdits != juggler.editedImage,
         );
       default:
         return SlyControlsListView(
