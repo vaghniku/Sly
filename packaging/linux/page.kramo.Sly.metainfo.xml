@@ -6,9 +6,9 @@
     <name>Sly</name>
     <summary>Edit your images easily</summary>
     <description>
-      <p>A friendly image editor that requires no internet connection or preexisting expertise. Just open a photo and have at it.</p>
+      <p>A friendly image editor that requires no internet connection or preexisting expertise. Just some photos and have at it.</p>
       <p>The app  allows you to adjust attributes like brightness or contrast as well as add effects like a vignette or a border. It also allows you to flip, rotate and crop the image to your heart's desire. If you're a pro, you can even preview your edits on a histogram.</p>
-      <p>When you're done, just save the photo as a JPEG or a PNG with the quality settings of your choosing. You also get a choice in whether or not to keep metadata such as location information.</p>
+      <p>When you're done, just save the photo with the quality settings of your choosing. You also get a choice in whether or not to keep metadata such as location information.</p>
     </description>
     <launchable type="desktop-id">page.kramo.Sly.desktop</launchable>
     <branding>
@@ -45,6 +45,16 @@
     </screenshot>
   </screenshots>
     <releases>
+        <release version="1.0.0" date="2024-10-17">
+            <description>
+                <ul>
+                    <li>Added support for editing multiple images, copying and pasting edits between them</li>
+                    <li>You can now view your images in a full-screen preview by tapping on them</li>
+                    <li>Clarified some wording to be less technical</li>
+                    <li>Various user interface improvements</li>
+                </ul>
+            </description>
+        </release>
         <release version="0.4.0" date="2024-10-17">
             <description>
                 <ul>

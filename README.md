@@ -11,11 +11,11 @@
 
 # About the Project
 
-Sly is a friendly image editor that requires no internet connection or preexisting expertise. Just open a photo and have at it.
+Sly is a friendly image editor that requires no internet connection or preexisting expertise. Just open some photos and have at it.
 
-The app  allows you to adjust attributes like brightness or contrast as well as add effects like a vignette or a border. It also allows you to flip, rotate and crop the image to your heart's desire. If you're a pro, you can even preview your edits on a histogram.
+The app allows you to adjust attributes like brightness or contrast as well as add effects like a vignette or a border. It also allows you to flip, rotate and crop the image to your heart's desire. If you're a pro, you can even preview your edits on a histogram.
 
-When you're done, just save the photo as a JPEG or a PNG with the quality settings of your choosing. You also get a choice in whether or not to keep metadata such as location information.
+When you're done, just save the photo with the quality settings of your choosing. You also get a choice in whether or not to keep metadata such as location information.
 
 # Installation
 
