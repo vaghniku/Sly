@@ -42,15 +42,17 @@ class _SlyImageCarouselState extends State<SlyImageCarousel> {
     return AnimatedSize(
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeOutQuint,
-      child: widget.visible
-          ? Container(
-              color: isWide(context) ? null : Theme.of(context).hoverColor,
-              child: AnimatedPadding(
+      child: Container(
+        color: isWide(context) ? null : Theme.of(context).hoverColor,
+        child: widget.visible
+            ? AnimatedPadding(
                 key: widget.globalKey,
                 duration: const Duration(milliseconds: 600),
                 curve: Curves.easeOutQuint,
-                padding:
-                    EdgeInsets.only(bottom: isWide(context) ? 12 : 3, left: 8),
+                padding: EdgeInsets.only(
+                  bottom: isWide(context) ? 12 : 3,
+                  left: 8,
+                ),
                 child: SizedBox(
                   height: 75,
                   child: Row(spacing: 4, children: [
@@ -128,9 +130,9 @@ class _SlyImageCarouselState extends State<SlyImageCarousel> {
                     ),
                   ]),
                 ),
-              ),
-            )
-          : Container(),
+              )
+            : null,
+      ),
     );
   }
 }

@@ -749,14 +749,25 @@ class _SlyEditorPageState extends State<SlyEditorPage> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        SlyNavigationBar(
-                          getSelectedPageIndex: () => _selectedPageIndex,
-                          getShowCarousel: () => _showCarousel,
-                          toggleCarousel: toggleCarousel,
-                          onDestinationSelected: (index) =>
-                              navigationDestinationSelected(index),
+                        MediaQuery(
+                          data: MediaQuery.of(context).copyWith(
+                            padding: MediaQuery.of(context)
+                                .padding
+                                .copyWith(top: 0, bottom: 0),
+                          ),
+                          child: SlyNavigationBar(
+                            getSelectedPageIndex: () => _selectedPageIndex,
+                            getShowCarousel: () => _showCarousel,
+                            toggleCarousel: toggleCarousel,
+                            onDestinationSelected: (index) =>
+                                navigationDestinationSelected(index),
+                          ),
                         ),
                         imageCarousel,
+                        Container(
+                          height: MediaQuery.of(context).viewPadding.bottom,
+                          color: Theme.of(context).hoverColor,
+                        ),
                       ],
                     ),
                   ),

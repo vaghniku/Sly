@@ -68,10 +68,12 @@ class SlyJuggler {
           } else if (snapshot.hasError) {
             return Container();
           } else {
-            return const SizedBox(
-              width: 24,
-              height: 24,
-              child: SlySpinner(),
+            return const Center(
+              child: SizedBox(
+                width: 16,
+                height: 16,
+                child: SlySpinner(),
+              ),
             );
           }
         },
