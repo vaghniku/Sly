@@ -85,22 +85,22 @@ class SlyNavigationBar extends StatelessWidget {
           _getDestination('Effects', 'assets/icons/effects.webp'),
           _getDestination('Crop', 'assets/icons/crop.webp'),
           _getDestination('Share', 'assets/icons/save.webp'),
-          Semantics(
-            label: 'More Images',
-            child: FloatingActionButton.small(
-              shape: const CircleBorder(),
-              splashColor: Colors.transparent,
-              elevation: 0,
-              hoverElevation: 0,
-              focusElevation: 0,
-              disabledElevation: 0,
-              highlightElevation: 0,
-              onPressed: toggleCarousel,
-              child: AnimatedRotation(
-                turns: getShowCarousel() ? 1 / 8 : 0,
-                duration: const Duration(milliseconds: 400),
-                curve: Curves.easeOutBack,
-                child: const ImageIcon(AssetImage('assets/icons/add.webp')),
+          FloatingActionButton.small(
+            shape: const CircleBorder(),
+            splashColor: Colors.transparent,
+            elevation: 0,
+            hoverElevation: 0,
+            focusElevation: 0,
+            disabledElevation: 0,
+            highlightElevation: 0,
+            onPressed: toggleCarousel,
+            child: AnimatedRotation(
+              turns: getShowCarousel() ? 1 / 8 : 0,
+              duration: const Duration(milliseconds: 400),
+              curve: Curves.easeOutBack,
+              child: const ImageIcon(
+                AssetImage('assets/icons/add.webp'),
+                semanticLabel: 'More Images',
               ),
             ),
           ),

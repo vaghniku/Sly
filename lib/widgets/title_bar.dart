@@ -35,28 +35,26 @@ class SlyTitleBar extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    Semantics(
-                      label: 'Close Window',
-                      child: IconButton(
-                        splashColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        style: ButtonStyle(
-                          backgroundColor: WidgetStatePropertyAll(
-                              Theme.of(context).hoverColor),
-                        ),
-                        iconSize: 16,
-                        padding: const EdgeInsets.all(0),
-                        constraints: const BoxConstraints(
-                          minWidth: 24,
-                          minHeight: 24,
-                          maxWidth: 24,
-                          maxHeight: 24,
-                        ),
-                        icon: const ImageIcon(
-                          AssetImage('assets/icons/window-close.webp'),
-                        ),
-                        onPressed: () => exit(0),
+                    IconButton(
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStatePropertyAll(
+                            Theme.of(context).hoverColor),
                       ),
+                      iconSize: 16,
+                      padding: const EdgeInsets.all(0),
+                      constraints: const BoxConstraints(
+                        minWidth: 24,
+                        minHeight: 24,
+                        maxWidth: 24,
+                        maxHeight: 24,
+                      ),
+                      icon: const ImageIcon(
+                        AssetImage('assets/icons/window-close.webp'),
+                        semanticLabel: 'Close Window',
+                      ),
+                      onPressed: () => exit(0),
                     ),
                   ],
                 ),

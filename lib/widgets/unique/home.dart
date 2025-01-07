@@ -57,18 +57,16 @@ class _SlyHomePageState extends State<SlyHomePage> {
         left: 12,
         right: 12,
       ),
-      child: Semantics(
-        label: 'Preferences',
-        child: IconButton(
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          icon: ImageIcon(
-            color: Theme.of(context).hintColor,
-            const AssetImage('assets/icons/preferences.webp'),
-          ),
-          padding: const EdgeInsets.all(12),
-          onPressed: () => showSlyPreferencesDialog(context),
+      child: IconButton(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        icon: ImageIcon(
+          color: Theme.of(context).hintColor,
+          const AssetImage('assets/icons/preferences.webp'),
+          semanticLabel: 'Preferences',
         ),
+        padding: const EdgeInsets.all(12),
+        onPressed: () => showSlyPreferencesDialog(context),
       ),
     );
 

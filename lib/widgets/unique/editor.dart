@@ -570,41 +570,40 @@ class _SlyEditorPageState extends State<SlyEditorPage> {
                         ? const EdgeInsets.only(
                             top: 3, bottom: 80, left: 3, right: 3)
                         : const EdgeInsets.all(3),
-                    child: Semantics(
-                      label: 'More Images',
-                      child: FloatingActionButton.small(
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(8),
-                          ),
+                    child: FloatingActionButton.small(
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(8),
                         ),
-                        backgroundColor: isTall(context)
-                            ? Theme.of(context).focusColor
-                            : Colors.black87,
-                        foregroundColor: isTall(context)
-                            ? Theme.of(context).colorScheme.primary
-                            : Colors.white,
-                        focusColor: Theme.of(context)
-                            .colorScheme
-                            .primary
-                            .withValues(alpha: 0.1),
-                        hoverColor: Theme.of(context)
-                            .colorScheme
-                            .primary
-                            .withValues(alpha: 0.1),
-                        splashColor: Colors.transparent,
-                        elevation: 0,
-                        hoverElevation: 0,
-                        focusElevation: 0,
-                        disabledElevation: 0,
-                        highlightElevation: 0,
-                        onPressed: toggleCarousel,
-                        child: AnimatedRotation(
-                          turns: _showCarousel ? 1 / 8 : 0,
-                          duration: const Duration(milliseconds: 400),
-                          curve: Curves.easeOutBack,
-                          child: const ImageIcon(
-                              AssetImage('assets/icons/add.webp')),
+                      ),
+                      backgroundColor: isTall(context)
+                          ? Theme.of(context).focusColor
+                          : Colors.black87,
+                      foregroundColor: isTall(context)
+                          ? Theme.of(context).colorScheme.primary
+                          : Colors.white,
+                      focusColor: Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withValues(alpha: 0.1),
+                      hoverColor: Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withValues(alpha: 0.1),
+                      splashColor: Colors.transparent,
+                      elevation: 0,
+                      hoverElevation: 0,
+                      focusElevation: 0,
+                      disabledElevation: 0,
+                      highlightElevation: 0,
+                      onPressed: toggleCarousel,
+                      child: AnimatedRotation(
+                        turns: _showCarousel ? 1 / 8 : 0,
+                        duration: const Duration(milliseconds: 400),
+                        curve: Curves.easeOutBack,
+                        child: const ImageIcon(
+                          AssetImage('assets/icons/add.webp'),
+                          semanticLabel: 'More Images',
                         ),
                       ),
                     ),

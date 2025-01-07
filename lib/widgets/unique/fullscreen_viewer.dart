@@ -59,11 +59,9 @@ void showFullScreenViewer(BuildContext context, Uint8List editedImageData) {
                 highlightElevation: 0,
                 child: Transform.rotate(
                   angle: pi / 4,
-                  child: Semantics(
-                    label: 'Close',
-                    child: const ImageIcon(
-                      AssetImage('assets/icons/add.webp'),
-                    ),
+                  child: const ImageIcon(
+                    AssetImage('assets/icons/add.webp'),
+                    semanticLabel: 'Close',
                   ),
                 ),
               ),
