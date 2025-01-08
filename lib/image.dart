@@ -149,7 +149,7 @@ class SlyImage {
   SlyRangeAttribute get whites => lightAttributes['whites']!;
   SlyRangeAttribute get mids => lightAttributes['mids']!;
 
-  SlyRangeAttribute get saturation => colorAttributes['stauration']!;
+  SlyRangeAttribute get saturation => colorAttributes['saturation']!;
   SlyRangeAttribute get temperature => colorAttributes['temperature']!;
   SlyRangeAttribute get tint => colorAttributes['tint']!;
 
