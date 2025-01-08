@@ -8,7 +8,7 @@ import '/widgets/slider_row.dart';
 
 LinearGradient? getGradientForAttributeName(String name) {
   switch (name) {
-    case 'temp':
+    case 'temperature':
       return LinearGradient(colors: [
         Colors.blue,
         Colors.lightBlue.shade100,
@@ -30,7 +30,7 @@ LinearGradient? getGradientForAttributeName(String name) {
 class SlyControlsListView extends StatelessWidget {
   final Map<String, SlyRangeAttribute> attributes;
   final HistoryManager history;
-  final Function updateImage;
+  final VoidCallback updateImage;
 
   const SlyControlsListView({
     super.key,

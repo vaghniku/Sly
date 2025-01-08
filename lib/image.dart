@@ -123,7 +123,7 @@ class SlyImage {
 
   Map<String, SlyRangeAttribute> colorAttributes = {
     'saturation': SlyRangeAttribute('Saturation', 1, 1, 0, 2),
-    'temp': SlyRangeAttribute('Temperature', 0, 0, -1, 1),
+    'temperature': SlyRangeAttribute('Temperature', 0, 0, -1, 1),
     'tint': SlyRangeAttribute('Tint', 0, 0, -1, 1),
   };
 
@@ -142,17 +142,33 @@ class SlyImage {
     'rotation': SlyOverflowAttribute('Rotation', 0, 0, 4),
   };
 
-  int get width {
-    return _image.width;
-  }
+  SlyRangeAttribute get exposure => lightAttributes['exposure']!;
+  SlyRangeAttribute get brightness => lightAttributes['brightness']!;
+  SlyRangeAttribute get contrast => lightAttributes['contrast']!;
+  SlyRangeAttribute get blacks => lightAttributes['blacks']!;
+  SlyRangeAttribute get whites => lightAttributes['whites']!;
+  SlyRangeAttribute get mids => lightAttributes['mids']!;
 
-  int get height {
-    return _image.height;
-  }
+  SlyRangeAttribute get saturation => colorAttributes['stauration']!;
+  SlyRangeAttribute get temperature => colorAttributes['temperature']!;
+  SlyRangeAttribute get tint => colorAttributes['tint']!;
 
-  bool get loading {
-    return _loading > 0;
-  }
+  SlyRangeAttribute get denoise => effectAttributes['denoise']!;
+  SlyRangeAttribute get sharpness => effectAttributes['sharpness']!;
+  SlyRangeAttribute get sepia => effectAttributes['sepia']!;
+  SlyRangeAttribute get vignette => effectAttributes['vignette']!;
+  SlyRangeAttribute get border => effectAttributes['border']!;
+
+  SlyBoolAttribute get hflip =>
+      geometryAttributes['hflip']! as SlyBoolAttribute;
+  SlyBoolAttribute get vflip =>
+      geometryAttributes['vflip']! as SlyBoolAttribute;
+  SlyOverflowAttribute get rotation =>
+      geometryAttributes['rotation']! as SlyOverflowAttribute;
+
+  int get width => _image.width;
+  int get height => _image.height;
+  bool get loading => _loading > 0;
 
   /// True if the image is small enough and the device is powerful enough to load it.
   bool get canLoadFullRes {
@@ -211,11 +227,9 @@ class SlyImage {
 
     _loading -= 1;
 
-    if (editedImage == null) return;
-
-    if (_editsApplied > applied) return;
-
-    if (controller.isClosed) return;
+    if (editedImage == null || _editsApplied > applied || controller.isClosed) {
+      return;
+    }
 
     _image = editedImage;
     controller.add('updated');
@@ -308,15 +322,9 @@ class SlyImage {
 
     if (skipGeometry) return;
 
-    geometryAttributes['hflip'] = SlyBoolAttribute.copy(
-      src.geometryAttributes['hflip'] as SlyBoolAttribute,
-    );
-    geometryAttributes['vflip'] = SlyBoolAttribute.copy(
-      src.geometryAttributes['vflip'] as SlyBoolAttribute,
-    );
-    geometryAttributes['rotation'] = SlyOverflowAttribute.copy(
-      src.geometryAttributes['rotation'] as SlyOverflowAttribute,
-    );
+    geometryAttributes['hflip'] = SlyBoolAttribute.copy(src.hflip);
+    geometryAttributes['vflip'] = SlyBoolAttribute.copy(src.vflip);
+    geometryAttributes['rotation'] = SlyOverflowAttribute.copy(src.rotation);
   }
 
   /// Removes Exif metadata from the image.
@@ -375,10 +383,7 @@ class SlyImage {
         height: (rect.height * height).round(),
       );
 
-    final croppedImage = (await cmd.executeThread()).outputImage;
-    if (croppedImage == null) return;
-
-    _originalImage = croppedImage;
+    _originalImage = (await cmd.executeThread()).outputImage ?? _originalImage;
   }
 
   /// Returns the image encoded as `format`.
@@ -462,27 +467,16 @@ class SlyImage {
       ..image(editableImage)
       ..copy();
 
-    final temp = colorAttributes['temp']!;
-    final tint = colorAttributes['tint']!;
-
-    for (SlyRangeAttribute attribute in [temp, tint]) {
+    for (SlyRangeAttribute attribute in [temperature, tint]) {
       if (attribute.value != attribute.anchor) {
         cmd.colorOffset(
-          red: 50 * temp.value,
+          red: 50 * temperature.value,
           green: 50 * tint.value * -1,
-          blue: 50 * temp.value * -1,
+          blue: 50 * temperature.value * -1,
         );
         break;
       }
     }
-
-    final exposure = lightAttributes['exposure']!;
-    final brightness = lightAttributes['brightness']!;
-    final contrast = lightAttributes['contrast']!;
-    final saturation = colorAttributes['saturation']!;
-    final blacks = lightAttributes['blacks']!;
-    final whites = lightAttributes['whites']!;
-    final mids = lightAttributes['mids']!;
 
     for (SlyRangeAttribute attribute in [
       exposure,
@@ -513,12 +507,10 @@ class SlyImage {
       }
     }
 
-    final sepia = effectAttributes['sepia']!;
     if (sepia.value != sepia.anchor) {
       cmd.sepia(amount: sepia.value);
     }
 
-    final denoise = effectAttributes['denoise']!;
     if (denoise.value != denoise.anchor) {
       cmd.convolution(
         filter: [
@@ -536,7 +528,6 @@ class SlyImage {
       );
     }
 
-    final sharpness = effectAttributes['sharpness']!;
     if (sharpness.value != sharpness.anchor) {
       cmd.convolution(
         filter: [0, -1, 0, -1, 5, -1, 0, -1, 0],
@@ -544,12 +535,10 @@ class SlyImage {
       );
     }
 
-    final vignette = effectAttributes['vignette']!;
     if (vignette.value != vignette.anchor) {
       cmd.vignette(amount: vignette.value);
     }
 
-    final border = effectAttributes['border']!;
     if (border.value != border.anchor) {
       cmd.copyExpandCanvas(
           backgroundColor: border.value > 0

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '/widgets/tooltip.dart';
 
 class SlyNavigationRail extends StatelessWidget {
-  final Function getSelectedPageIndex;
-  final Function(int)? onDestinationSelected;
+  final int Function() getSelectedPageIndex;
+  final void Function(int)? onDestinationSelected;
 
   const SlyNavigationRail({
     super.key,
@@ -47,8 +47,8 @@ class SlyNavigationRail extends StatelessWidget {
 }
 
 class SlyNavigationBar extends StatelessWidget {
-  final Function getSelectedPageIndex;
-  final Function getShowCarousel;
+  final int Function() getSelectedPageIndex;
+  final bool Function() getShowCarousel;
   final VoidCallback? toggleCarousel;
   final Function(int)? onDestinationSelected;
 

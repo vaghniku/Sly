@@ -15,7 +15,7 @@ class SlyImageView extends StatelessWidget {
   final Uint8List? editedImageData;
   final CropController? cropController;
   final ValueChanged<Rect>? onCrop;
-  final Function showCropView;
+  final bool Function() showCropView;
   final SlyImageAttribute hflip;
   final SlyImageAttribute vflip;
   final SlyImageAttribute rotation;

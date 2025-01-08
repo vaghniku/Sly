@@ -52,11 +52,6 @@ class _SlyEditorPageState extends State<SlyEditorPage> {
   SlyImage get _editedImage => juggler.editedImage!;
   set _editedImage(value) => juggler.editedImage = value;
 
-  get _lightAttributes => _editedImage.lightAttributes;
-  get _colorAttributes => _editedImage.colorAttributes;
-  get _effectAttributes => _editedImage.effectAttributes;
-  get _geometryAttributes => _editedImage.geometryAttributes;
-
   bool newImage = false;
 
   Widget? _histogram;
@@ -159,15 +154,13 @@ class _SlyEditorPageState extends State<SlyEditorPage> {
       final copyImage =
           SlyImage.from(image['editedImage'] ?? image['originalImage']);
 
-      final rotationAttr =
-          copyImage.geometryAttributes['rotation']! as SlyClampedAttribute;
-
-      if (![rotationAttr.min, rotationAttr.max].contains(rotationAttr.value)) {
-        copyImage.rotate(rotationAttr.value * 90);
+      if (!{copyImage.rotation.min, copyImage.rotation.max}
+          .contains(copyImage.rotation.value)) {
+        copyImage.rotate(copyImage.rotation.value * 90);
       }
 
-      final hflip = copyImage.geometryAttributes['hflip']!.value;
-      final vflip = copyImage.geometryAttributes['vflip']!.value;
+      final hflip = copyImage.hflip.value;
+      final vflip = copyImage.vflip.value;
 
       if (hflip && vflip) {
         copyImage.flip(SlyImageFlipDirection.both);
@@ -267,8 +260,7 @@ class _SlyEditorPageState extends State<SlyEditorPage> {
         final hash = _editedImage.hashCode;
 
         _editedImage.encode(format: SlyImageFormat.jpeg75).then((data) {
-          if (!mounted) return;
-          if (_editedImage.hashCode != hash) return;
+          if (!mounted || _editedImage.hashCode != hash) return;
 
           setState(() => _editedImageData = data);
         });
@@ -325,10 +317,10 @@ class _SlyEditorPageState extends State<SlyEditorPage> {
     final croppedImage = SlyImage.from(_originalImage);
     await croppedImage.crop(_cropController!.crop);
 
-    croppedImage.lightAttributes = _lightAttributes;
-    croppedImage.colorAttributes = _colorAttributes;
-    croppedImage.effectAttributes = _effectAttributes;
-    croppedImage.geometryAttributes = _geometryAttributes;
+    croppedImage.lightAttributes = _editedImage.lightAttributes;
+    croppedImage.colorAttributes = _editedImage.colorAttributes;
+    croppedImage.effectAttributes = _editedImage.effectAttributes;
+    croppedImage.geometryAttributes = _editedImage.geometryAttributes;
 
     _editedImage.dispose();
     _editedImage = croppedImage;
@@ -340,17 +332,14 @@ class _SlyEditorPageState extends State<SlyEditorPage> {
     if (!mounted) return;
 
     setState(() {
-      final hflipAttr = _geometryAttributes['hflip']!;
-      final vflipAttr = _geometryAttributes['vflip']!;
-
       switch (direction) {
         case SlyImageFlipDirection.horizontal:
-          hflipAttr.value = !hflipAttr.value;
+          _editedImage.hflip.value = !_editedImage.hflip.value;
         case SlyImageFlipDirection.vertical:
-          vflipAttr.value = !vflipAttr.value;
+          _editedImage.vflip.value = !_editedImage.vflip.value;
         case SlyImageFlipDirection.both:
-          hflipAttr.value = !hflipAttr.value;
-          vflipAttr.value = !vflipAttr.value;
+          _editedImage.hflip.value = !_editedImage.hflip.value;
+          _editedImage.vflip.value = !_editedImage.vflip.value;
       }
     });
   }
@@ -398,14 +387,14 @@ class _SlyEditorPageState extends State<SlyEditorPage> {
       case 1:
         return SlyControlsListView(
           key: const Key('colorControls'),
-          attributes: _colorAttributes,
+          attributes: _editedImage.colorAttributes,
           history: history,
           updateImage: updateImage,
         );
       case 2:
         return SlyControlsListView(
           key: const Key('effectControls'),
-          attributes: _effectAttributes,
+          attributes: _editedImage.effectAttributes,
           history: history,
           updateImage: updateImage,
         );
@@ -415,9 +404,9 @@ class _SlyEditorPageState extends State<SlyEditorPage> {
           setCropChanged: (value) => _cropChanged = value,
           getPortraitCrop: () => _portraitCrop,
           setPortraitCrop: (value) => setState(() => _portraitCrop = value),
-          rotation: _geometryAttributes['rotation']!,
+          rotation: _editedImage.rotation,
           rotate: (value) => setState(
-            () => _geometryAttributes['rotation']!.value = value,
+            () => _editedImage.rotation.value = value,
           ),
           flipImage: flipImage,
         );
@@ -444,7 +433,7 @@ class _SlyEditorPageState extends State<SlyEditorPage> {
       default:
         return SlyControlsListView(
           key: const Key('lightControls'),
-          attributes: _lightAttributes,
+          attributes: _editedImage.lightAttributes,
           history: history,
           updateImage: updateImage,
         );
@@ -453,7 +442,7 @@ class _SlyEditorPageState extends State<SlyEditorPage> {
 
   void navigationDestinationSelected(int index) {
     if (_selectedPageIndex == index) return;
-    if (_selectedPageIndex == 3 && _cropChanged == true) {
+    if (_selectedPageIndex == 3 && _cropChanged) {
       updateCroppedImage();
       _cropChanged = false;
     }
@@ -485,9 +474,9 @@ class _SlyEditorPageState extends State<SlyEditorPage> {
       cropController: _cropController,
       onCrop: (rect) => _cropChanged = true,
       showCropView: () => _selectedPageIndex == 3,
-      hflip: _geometryAttributes['hflip']!,
-      vflip: _geometryAttributes['vflip']!,
-      rotation: _geometryAttributes['rotation']!,
+      hflip: _editedImage.hflip,
+      vflip: _editedImage.vflip,
+      rotation: _editedImage.rotation,
     );
 
     final controlsView = SlyControlsView(
@@ -497,7 +486,7 @@ class _SlyEditorPageState extends State<SlyEditorPage> {
 
     final toolbar = SlyToolbar(
       history: history,
-      pageHasHistogram: () => [0, 1].contains(_selectedPageIndex),
+      pageHasHistogram: () => {0, 1}.contains(_selectedPageIndex),
       getShowHistogram: () => _showHistogram,
       setShowHistogram: (value) => setState(
         () => _showHistogram = value,
@@ -508,7 +497,7 @@ class _SlyEditorPageState extends State<SlyEditorPage> {
     final histogram = AnimatedSize(
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeOutQuint,
-      child: [0, 1].contains(_selectedPageIndex) && _showHistogram
+      child: {0, 1}.contains(_selectedPageIndex) && _showHistogram
           ? Padding(
               padding: EdgeInsets.only(
                 bottom: isWide(context) ? 12 : 0,
@@ -526,8 +515,8 @@ class _SlyEditorPageState extends State<SlyEditorPage> {
     final imageCarousel = SlyImageCarousel(
       visible: _showCarousel,
       juggler: juggler,
-      globalKey: _carouselKey,
       removeImage: _removeImage,
+      globalKey: _carouselKey,
     );
 
     return Shortcuts(

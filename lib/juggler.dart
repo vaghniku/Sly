@@ -184,7 +184,7 @@ class SlyJuggler {
   ///
   /// Does not include geometry attributes.
   void pasteEdits() {
-    if (copiedEdits == null || copiedEdits == editedImage) return;
+    if ({editedImage, null}.contains(copiedEdits)) return;
     editedImage?.copyEditsFrom(copiedEdits!, skipGeometry: true);
     editedImage?.applyEditsProgressive();
   }

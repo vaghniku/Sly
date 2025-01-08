@@ -15,9 +15,7 @@ void main() async {
 
   if (isDesktop) {
     await windowManager.ensureInitialized();
-  }
-  if (isWindows) {
-    windowManager.setMinimumSize(const Size(360, 294));
+    if (isWindows) windowManager.setMinimumSize(const Size(360, 294));
   }
 }
 

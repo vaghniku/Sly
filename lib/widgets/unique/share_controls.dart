@@ -6,8 +6,8 @@ import '/widgets/switch.dart';
 import '/widgets/unique/save_button.dart';
 
 class SlyShareControls extends StatelessWidget {
-  final Function getSaveMetadata;
-  final Function setSaveMetadata;
+  final bool Function() getSaveMetadata;
+  final void Function(bool) setSaveMetadata;
   final bool multipleImages;
   final SlySaveButton? saveButton;
   final VoidCallback? saveAll;

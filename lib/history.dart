@@ -1,8 +1,8 @@
 import '/image.dart';
 
 class HistoryManager {
-  final Function getImage;
-  final Function? updateCallback;
+  final SlyImage Function() getImage;
+  final void Function()? updateCallback;
 
   final List<List<Map<String, SlyRangeAttribute>>> _undoList = [];
   final List<List<Map<String, SlyRangeAttribute>>> _redoList = [];
@@ -35,7 +35,6 @@ class HistoryManager {
   }
 
   void undo() => _undoOrRedo(redo: false);
-
   void redo() => _undoOrRedo(redo: true);
 
   void _undoOrRedo({required bool redo}) {
@@ -57,7 +56,6 @@ class HistoryManager {
       }
     }
 
-    if (updateCallback == null) return;
-    updateCallback!();
+    updateCallback?.call();
   }
 }

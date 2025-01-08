@@ -11,12 +11,12 @@ import '/widgets/toggle_buttons.dart';
 
 class SlyGeometryControls extends StatelessWidget {
   final CropController? cropController;
-  final Function setCropChanged;
-  final Function getPortraitCrop;
-  final Function setPortraitCrop;
+  final void Function(bool) setCropChanged;
+  final bool Function() getPortraitCrop;
+  final void Function(bool) setPortraitCrop;
   final SlyImageAttribute rotation;
-  final Function rotate;
-  final Function flipImage;
+  final void Function(int) rotate;
+  final void Function(SlyImageFlipDirection) flipImage;
 
   const SlyGeometryControls({
     super.key,

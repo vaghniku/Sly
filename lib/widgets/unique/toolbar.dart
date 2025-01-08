@@ -7,9 +7,9 @@ import '/widgets/tooltip.dart';
 
 class SlyToolbar extends StatelessWidget {
   final HistoryManager history;
-  final Function pageHasHistogram;
-  final Function getShowHistogram;
-  final Function setShowHistogram;
+  final bool Function() pageHasHistogram;
+  final bool Function() getShowHistogram;
+  final void Function(bool) setShowHistogram;
   final VoidCallback? showOriginal;
 
   const SlyToolbar({
