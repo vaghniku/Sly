@@ -1,0 +1,2 @@
+C:/D Drive/AI Apps/Flutter_photoeditor/Sly/android/app/.cxx/RelWithDebInfo/2e2y6f6d/x86/CMakeFiles/edit_cache.dir
+C:/D Drive/AI Apps/Flutter_photoeditor/Sly/android/app/.cxx/RelWithDebInfo/2e2y6f6d/x86/CMakeFiles/rebuild_cache.dir
